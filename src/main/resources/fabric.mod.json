@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "id": "destiny_staff_worldgen",
+  "version": "${version}",
+  "name": "Destiny Staff WorldGen",
+  "description": "Isolated flat/no-structures generator for Multiworld.",
+  "environment": "server",
+  "entrypoints": { "main": ["destiny.dynasty.staffworldgen.DestinyStaffWorldGen"] },
+  "depends": { "fabricloader": ">=0.15.0", "minecraft": "1.20.1", "multiworld": "*" }
+}
