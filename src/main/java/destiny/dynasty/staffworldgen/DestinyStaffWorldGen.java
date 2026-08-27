@@ -10,6 +10,8 @@ import net.minecraft.world.gen.chunk.FlatChunkGenerator;
 import net.minecraft.world.gen.chunk.FlatChunkGeneratorConfig;
 import java.util.Collections;
 import java.util.Optional;
+import java.util.LinkedHashMap;
+import java.lang.reflect.Field;
 public final class DestinyStaffWorldGen implements ModInitializer {
     public static final Identifier ID = new Identifier("destiny", "staff_flat");
     @Override public void onInitialize() { ServerLifecycleEvents.SERVER_STARTED.register(this::register); }
@@ -23,6 +25,26 @@ public final class DestinyStaffWorldGen implements ModInitializer {
         config.updateLayerBlocks();
         CreateCommand.registerCustomGenerator(ID, new NoStructuresFlatGenerator(config));
         System.out.println("[DestinyStaffWorldGen] Registered " + ID);
+        verifyMultiworldNumericConfig();
+    }
+
+    private void verifyMultiworldNumericConfig() {
+        try {
+            var configuration = new me.isaiah.multiworld.config.Configuration();
+            Field field = me.isaiah.multiworld.config.Configuration.class.getDeclaredField("contentMap");
+            field.setAccessible(true);
+            var values = new LinkedHashMap<String, Object>();
+            values.put("spawnpos", Integer.valueOf(4045));
+            field.set(configuration, values);
+            long decoded = configuration.getLong("spawnpos");
+            if (decoded == 4045L) {
+                System.out.println("[DestinyStaffWorldGen] Multiworld numeric-config check: PASS (patched getLong)");
+            } else {
+                System.out.println("[DestinyStaffWorldGen] Multiworld numeric-config check: FAIL (unexpected value " + decoded + ")");
+            }
+        } catch (Throwable error) {
+            System.out.println("[DestinyStaffWorldGen] Multiworld numeric-config check: FAIL (old/incompatible getLong: " + error + ")");
+        }
     }
     private static final class NoStructuresFlatGenerator extends FlatChunkGenerator {
         NoStructuresFlatGenerator(FlatChunkGeneratorConfig config) { super(config); }
