@@ -7,7 +7,7 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-    modImplementation files('../Multiworld-Fork-Destiny/output/Multiworld-Fabric-1.20.1.jar')
+    modImplementation files('../Multiworld-Fork-Destiny/output/Multiworld-Fabric-1.20.1-destiny-patched.jar')
 }
 processResources { inputs.property 'version', project.version; filesMatching('fabric.mod.json') { expand 'version': project.version } }
 java { toolchain { languageVersion = JavaLanguageVersion.of(17) } }
